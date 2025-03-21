@@ -26,7 +26,7 @@ const projects = [
   {
     title: "Paradox",
     description: "A minimalistic Open-Source AI Chatbot combining powerful AI models for intelligent conversations with web search, coding, reasoning, and voice interaction capabilities.",
-    link: "https://github.com/iamakchavan/Paradox",
+    link: "https://paradoxed.vercel.app",
   },
   {
     title: "Amazicons",

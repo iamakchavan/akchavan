@@ -31,18 +31,31 @@ export const Live = (): JSX.Element => {
           className="mb-8 p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors duration-200 group flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5 text-dove-gray group-hover:text-persian-green transition-colors duration-200" />
-          <span className="text-dove-gray group-hover:text-persian-green transition-colors duration-200 text-[13px]">
-            home
+          <span className="text-dove-gray text-[13px] relative group-hover:text-persian-green transition-colors duration-200">
+            <span className="relative">
+              home
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-persian-green transition-all duration-500 group-hover:w-full"></span>
+            </span>
           </span>
         </button>
-        <div className="bg-white/50 rounded-lg p-6 backdrop-blur-sm border border-gray-100/30">
-          <h1 className="font-semantic-heading-1 text-persian-green text-[32px] tracking-[-1px] leading-[48px] mb-4">
-            Let's Chat
+        <div className="space-y-8">
+          <h1 className="font-semantic-heading-1 text-persian-green text-[48px] tracking-[-1px] leading-[72px] mb-6">
+            <span className="inline-block transform hover:scale-[1.02] transition-transform duration-300" style={{
+              textShadow: `
+                1px 1px 0 rgba(6, 182, 212, 0.4),
+                2px 2px 0 rgba(6, 182, 212, 0.3),
+                3px 3px 0 rgba(6, 182, 212, 0.2),
+                4px 4px 0 rgba(6, 182, 212, 0.1),
+                8px 8px 15px rgba(0, 0, 0, 0.05)
+              `,
+              transform: 'perspective(500px) rotateX(10deg)',
+            }}>
+            talk to me!
+            </span>
           </h1>
-          <p className="text-[12.8px] leading-5 text-[#666666] mb-6">
+          <p className="text-[12.8px] leading-6 text-[#666666]">
             This is where we'll have our conversation. I'm working on making this space more interactive!
           </p>
-          <div className="animate-pulse w-full h-12 bg-persian-green/10 rounded-lg"></div>
         </div>
       </div>
     </div>

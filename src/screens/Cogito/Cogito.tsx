@@ -31,8 +31,11 @@ export const Cogito = (): JSX.Element => {
           className="mb-8 p-2 -ml-2 rounded-full hover:bg-white/10 transition-colors duration-200 group flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5 text-dove-gray group-hover:text-persian-green transition-colors duration-200" />
-          <span className="text-dove-gray group-hover:text-persian-green transition-colors duration-200 text-[13px]">
-            home
+          <span className="text-dove-gray text-[13px] relative group-hover:text-persian-green transition-colors duration-200">
+            <span className="relative">
+              home
+              <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-persian-green transition-all duration-500 group-hover:w-full"></span>
+            </span>
           </span>
         </button>
 

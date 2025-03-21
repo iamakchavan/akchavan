@@ -30,7 +30,7 @@ const projects = [
   },
   {
     title: "Amazicons",
-    description: "A collection of all icons that you'll ever need, that I use in my designs too!",
+    description: "A collection of all the icons that you'll ever need, that I use in my designs too!",
     link: "https://www.figma.com/community/file/1484678564434143542",
   },
   {

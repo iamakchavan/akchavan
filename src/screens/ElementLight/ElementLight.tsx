@@ -1,5 +1,4 @@
 import {
-  ClockIcon,
   SunIcon,
   SunriseIcon,
   MoonIcon,
@@ -10,10 +9,10 @@ import {
   MailIcon,
   ArrowUpRight,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
+import { VoiceAgent } from "../../components/VoiceAgent";
 import { Separator } from "../../components/ui/separator";
 
 // Project data for mapping
@@ -71,20 +70,29 @@ export const ElementLight = (): JSX.Element => {
   const getUserLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(async (position) => {
+        if (!position || !position.coords) {
+          setLocation('Local Time');
+          setLoading(false);
+          return;
+        }
+
         try {
           const response = await fetch(
             `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${position.coords.latitude}&longitude=${position.coords.longitude}&localityLanguage=en`
           );
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
           const data = await response.json();
           setLocation(data.city || data.locality || 'Local Time');
         } catch (error) {
-          console.error("Error getting location:", error);
+          console.warn("Error getting location:", error);
           setLocation('Local Time');
         } finally {
           setLoading(false);
         }
       }, (error) => {
-        console.error("Geolocation error:", error);
+        console.warn("Geolocation error:", error);
         setLocation('Local Time');
         setLoading(false);
       });
@@ -134,24 +142,7 @@ export const ElementLight = (): JSX.Element => {
         <header className="w-full mb-14">
           <div className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-2">
-              <div 
-                onClick={() => navigate('/live')}
-                className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-persian-green to-persian-green/60 animate-pulse hover:scale-125 hover:rotate-[720deg] hover:from-persian-green hover:to-persian-green transition-all duration-[1200ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] shadow-lg hover:shadow-persian-green/50 relative before:absolute before:inset-0 before:rounded-full before:bg-persian-green/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[800ms] before:ease-out cursor-pointer"
-                style={{
-                  animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-                }}
-              />
-              <span
-                onClick={() => navigate('/live')}
-                className="text-[13px] font-medium tracking-tight relative cursor-pointer"
-                style={{
-                  background: 'linear-gradient(120deg, rgba(83, 83, 83, 0.1) 0%, rgba(83, 83, 83, 0.9) 25%, rgba(83, 83, 83, 0.9) 50%, rgba(83, 83, 83, 0.1) 75%, rgba(83, 83, 83, 0.9) 100%)',
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundSize: '400% 100%',
-                  animation: 'shimmer 3s ease-in-out infinite'
-                }}
-              >talk to me!</span>
+              <VoiceAgent />
             </div>
 
             <nav className="flex space-x-4">

@@ -76,8 +76,8 @@ export default defineConfig(({ command, mode }) => ({
     },
     rollupOptions: {
       output: {
-        manualChunks: undefined,
-        compact: true
+        compact: true,
+        manualChunks: undefined
       }
     }
   },

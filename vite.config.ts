@@ -10,43 +10,27 @@ export default defineConfig(({ command, mode }) => ({
     mode === 'production' && obfuscator({
       options: {
         compact: true,
-        controlFlowFlattening: true,
-        controlFlowFlatteningThreshold: 1,
-        deadCodeInjection: true,
-        deadCodeInjectionThreshold: 1,
-        debugProtection: true,
-        debugProtectionInterval: 4000,
-        disableConsoleOutput: true,
-        domainLock: [], // Add your deployment domains here
+        controlFlowFlattening: false,
+        deadCodeInjection: false,
+        debugProtection: false,
+        disableConsoleOutput: false,
         identifierNamesGenerator: 'hexadecimal',
         identifiersPrefix: '_0x',
-        inputFileName: 'app.js',
         log: false,
         numbersToExpressions: true,
-        optionsPreset: 'high-obfuscation',
-        renameGlobals: true,
-        renameProperties: true,
+        renameGlobals: false,
+        renameProperties: false,
         rotateStringArray: true,
         seed: 0,
-        selfDefending: true,
+        selfDefending: false,
         shuffleStringArray: true,
-        simplify: true,
         splitStrings: true,
-        splitStringsChunkLength: 5,
+        splitStringsChunkLength: 10,
         stringArray: true,
-        stringArrayCallsTransform: true,
-        stringArrayCallsTransformThreshold: 1,
-        stringArrayEncoding: ['rc4'],
-        stringArrayIndexShift: true,
-        stringArrayRotate: true,
-        stringArrayShuffle: true,
-        stringArrayWrappersCount: 5,
-        stringArrayWrappersChainedCalls: true,
-        stringArrayWrappersParametersMaxCount: 5,
-        stringArrayWrappersType: 'function',
-        stringArrayThreshold: 1,
-        transformObjectKeys: true,
-        unicodeEscapeSequence: true
+        stringArrayEncoding: ['base64'],
+        stringArrayThreshold: 0.75,
+        transformObjectKeys: false,
+        unicodeEscapeSequence: false
       }
     })
   ].filter(Boolean),
@@ -62,9 +46,9 @@ export default defineConfig(({ command, mode }) => ({
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn']
+        drop_console: false,
+        drop_debugger: false,
+        pure_funcs: []
       },
       mangle: {
         toplevel: true,

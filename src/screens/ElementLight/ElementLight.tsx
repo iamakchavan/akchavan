@@ -8,12 +8,13 @@ import {
   LinkedinIcon,
   MailIcon,
   ArrowUpRight,
+  CloudIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent } from "../../components/ui/card";
 import { VoiceAgent } from "../../components/VoiceAgent";
 import { Separator } from "../../components/ui/separator";
+import styles from './ElementLight.module.css';
 
 // Project data for mapping
 const projects = [
@@ -58,14 +59,64 @@ const socialLinks = [
   { icon: <MailIcon className="w-4 h-4" />, text: "email", href: "mailto:akchavan@outlook.com" },
 ];
 
+const getWeatherDescription = (precipitation: number | null, rain: number | null, isDay: number | null) => {
+  if (precipitation !== null && precipitation > 2) {
+    return "expect a free shower service 🚿";
+  }
+  if (precipitation !== null && precipitation > 0.5) {
+    return "might need an umbrella, just saying ☔";
+  }
+  if (rain !== null && rain > 1) {
+    return "nature's sprinkler system activated 💦";
+  }
+  if (rain !== null && rain > 0) {
+    return "light drizzle, nature's mist setting 💧";
+  }
+  if (isDay) {
+    return "clear skies, perfect for stargazing... wait 🌟";
+  }
+  return "clear skies, stars doing their thing ✨";
+};
+
 export const ElementLight = (): JSX.Element => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(true);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [weather, setWeather] = useState<{
+    temperature: number | null;
+    isDay: number | null;
+    rain: number | null;
+    precipitation: number | null;
+  }>({
+    temperature: null,
+    isDay: null,
+    rain: null,
+    precipitation: null
+  });
 
   const visibleProjects = showAllProjects ? projects : projects.slice(0, 4);
+
+  const fetchWeather = async (latitude: number, longitude: number) => {
+    try {
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain,precipitation&current=is_day,temperature_2m,showers`
+      );
+      if (!response.ok) {
+        throw new Error('Weather API response was not ok');
+      }
+      const data = await response.json();
+      setWeather({
+        temperature: data.current.temperature_2m,
+        isDay: data.current.is_day,
+        rain: data.hourly.rain[0],
+        precipitation: data.hourly.precipitation[0]
+      });
+    } catch (error) {
+      console.warn("Error fetching weather:", error);
+    }
+  };
 
   const getUserLocation = () => {
     if ("geolocation" in navigator) {
@@ -85,6 +136,8 @@ export const ElementLight = (): JSX.Element => {
           }
           const data = await response.json();
           setLocation(data.city || data.locality || 'Local Time');
+          // Fetch weather after getting location
+          await fetchWeather(position.coords.latitude, position.coords.longitude);
         } catch (error) {
           console.warn("Error getting location:", error);
           setLocation('Local Time');
@@ -217,6 +270,30 @@ export const ElementLight = (): JSX.Element => {
             </span>
           </p>
 
+          {/* Weather display - positioned after bio, before social links */}
+          {weather.temperature !== null && (
+            <div className="flex flex-col gap-1.5 mb-8">
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  {weather.isDay ? (
+                    <SunIcon className={`w-3.5 h-3.5 text-persian-green/80 ${styles.spinSlow}`} />
+                  ) : (
+                    <MoonIcon className="w-3.5 h-3.5 text-persian-green/80 animate-pulse" />
+                  )}
+                </div>
+                <span className="text-[12.8px] text-emperor">
+                  {location} {weather.temperature}°C {weather.isDay ? 'day' : 'night'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 pl-0.5">
+                <CloudIcon className="w-3 h-3 text-dove-gray/70" />
+                <span className="text-[11.5px] text-[#666666]">
+                  {getWeatherDescription(weather.precipitation, weather.rain, weather.isDay)}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Social Links */}
           <div className="flex flex-wrap gap-2 mb-6 mt-8">
             {socialLinks.map((link, index) => (
@@ -247,49 +324,41 @@ export const ElementLight = (): JSX.Element => {
           <div className="space-y-2 transition-all duration-300 ease-in-out">
             {visibleProjects.map((project, index) => (
               <a
+                key={index}
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                key={index}
-                className="block transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-                style={{
-                  opacity: showAllProjects || index < 4 ? 1 : 0,
-                  maxHeight: showAllProjects || index < 4 ? '200px' : '0',
-                  transform: showAllProjects || index < 4 ? 'translateY(0) scale(1)' : 'translateY(-20px) scale(0.95)',
-                  overflow: 'hidden'
-                }}
+                className="block group relative py-3 px-3 transition-all duration-300"
               >
-                <Card className="border-none shadow-none bg-transparent hover:bg-white/50 transition-all duration-500 ease-out rounded-lg group hover:shadow-xl hover:shadow-persian-green/10 hover:scale-[1.02] relative before:absolute before:inset-0 before:bg-gradient-to-br before:from-persian-green/5 before:to-transparent before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500">
-                  <CardContent className="p-3 relative">
-                    <div className="flex justify-between items-start">
-                      <h3 className="font-medium text-[#535353] text-[12.9px] tracking-[-0.05px] leading-5 group-hover:text-persian-green transition-all duration-300">
+                <div className="relative z-10">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <h3 className="font-medium text-[12.9px] tracking-[-0.05px] leading-5 text-[#535353] group-hover:text-persian-green transition-colors duration-300 flex items-center gap-2">
                         {project.title}
+                        <ArrowUpRight className="w-3.5 h-3.5 opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 ease-out" />
                       </h3>
-                      <ArrowUpRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 text-persian-green transition-all duration-500 transform translate-y-1 translate-x-[-1px] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:rotate-[-12deg]" />
+                      <p className="text-[#666666] text-[12.9px] leading-5 mt-1 pr-4 group-hover:text-[#535353] transition-colors duration-300">
+                        {project.description}
+                      </p>
                     </div>
-                    <p className="text-[#666666] text-[12.9px] leading-5 transition-all duration-300 group-hover:text-[#535353]">
-                      {project.description}
-                    </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-persian-green/5 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top rounded-sm" />
+                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-persian-green/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left" />
               </a>
             ))}
           </div>
           
           {!showAllProjects && projects.length > 4 && (
-            <div className="mt-4">
-              <button
-                onClick={() => {
-                  setShowAllProjects(true);
-                }}
-                className="text-[11.5px] text-dove-gray/70 relative group cursor-pointer"
-              >
-                <span className="relative">
-                  see more
-                  <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-persian-green transition-all duration-500 group-hover:w-full"></span>
-                </span>
-              </button>
-            </div>
+            <button
+              onClick={() => setShowAllProjects(true)}
+              className="text-[11.5px] text-dove-gray/70 relative group cursor-pointer mt-4"
+            >
+              <span className="relative">
+                see more
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-persian-green transition-all duration-500 group-hover:w-full"></span>
+              </span>
+            </button>
           )}
           
           {showAllProjects && (

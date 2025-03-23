@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { VoiceAgent } from "../../components/VoiceAgent";
 

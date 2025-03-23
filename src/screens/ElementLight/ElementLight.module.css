@@ -1,0 +1,35 @@
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rain {
+  0% {
+    transform: translateY(-2px);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+}
+
+.spinSlow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.rain {
+  animation: rain 1.5s infinite;
+}
+
+.rainDelay {
+  animation: rain 1.5s infinite;
+  animation-delay: 0.5s;
+} 

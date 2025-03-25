@@ -316,10 +316,14 @@ export const ElementLight = (): JSX.Element => {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 text-[11.5px] text-dove-gray hover:text-persian-green transition-colors duration-300"
+                className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-persian-green"
               >
-                {link.icon}
-                {link.text}
+                <span className={`text-dove-gray/70 transition-colors duration-200 ${link.text === 'x' ? 'font-bold' : ''}`}>
+                  {link.icon}
+                </span>
+                <span className="font-medium text-dove-gray/80 text-[13px] tracking-[-0.3px] leading-5">
+                  {link.text}
+                </span>
               </motion.a>
             ))}
           </motion.div>

@@ -60,25 +60,6 @@ const socialLinks = [
   { icon: <MailIcon className="w-4 h-4" />, text: "email", href: "mailto:akchavan@outlook.com" },
 ];
 
-const getWeatherDescription = (precipitation: number | null, rain: number | null, isDay: number | null) => {
-  if (precipitation !== null && precipitation > 2) {
-    return "expect a free shower service 🚿";
-  }
-  if (precipitation !== null && precipitation > 0.5) {
-    return "might need an umbrella, just saying ☔";
-  }
-  if (rain !== null && rain > 1) {
-    return "nature's sprinkler system activated 💦";
-  }
-  if (rain !== null && rain > 0) {
-    return "light drizzle, nature's mist setting 💧";
-  }
-  if (isDay) {
-    return "clear skies, perfect for stargazing... wait 🌟";
-  }
-  return "clear skies, stars doing their thing ✨";
-};
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: { 
@@ -309,26 +290,18 @@ export const ElementLight = (): JSX.Element => {
           {weather.temperature !== null && (
             <motion.div 
               variants={itemVariants}
-              className="flex flex-col gap-1.5 mb-8"
+              className="flex items-center gap-2 mb-8"
             >
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  {weather.isDay ? (
-                    <SunIcon className={`w-3.5 h-3.5 text-persian-green/80 ${styles.spinSlow}`} />
-                  ) : (
-                    <MoonIcon className="w-3.5 h-3.5 text-persian-green/80 animate-pulse" />
-                  )}
-                </div>
-                <span className="text-[12.8px] text-emperor">
-                  {location} {weather.temperature}°C {weather.isDay ? 'day' : 'night'}
-                </span>
+              <div className="relative">
+                {weather.isDay ? (
+                  <SunIcon className={`w-3.5 h-3.5 text-persian-green/80 ${styles.spinSlow}`} />
+                ) : (
+                  <MoonIcon className="w-3.5 h-3.5 text-persian-green/80 animate-pulse" />
+                )}
               </div>
-              <div className="flex items-center gap-1.5 pl-0.5">
-                <CloudIcon className="w-3 h-3 text-dove-gray/70" />
-                <span className="text-[11.5px] text-[#666666]">
-                  {getWeatherDescription(weather.precipitation, weather.rain, weather.isDay)}
-                </span>
-              </div>
+              <span className="text-[12.8px] text-emperor">
+                {location} {weather.temperature}°C {weather.isDay ? 'day' : 'night'}
+              </span>
             </motion.div>
           )}
 

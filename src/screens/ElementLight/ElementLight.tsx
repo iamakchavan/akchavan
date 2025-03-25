@@ -8,7 +8,6 @@ import {
   LinkedinIcon,
   MailIcon,
   ArrowUpRight,
-  CloudIcon,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -310,7 +309,7 @@ export const ElementLight = (): JSX.Element => {
             variants={itemVariants}
             className="flex flex-wrap gap-2 mb-6"
           >
-            {socialLinks.map((link, index) => (
+            {socialLinks.map((link) => (
               <motion.a
                 key={link.text}
                 variants={itemVariants}
@@ -339,7 +338,7 @@ export const ElementLight = (): JSX.Element => {
             variants={containerVariants}
             className="space-y-2 transition-all duration-300 ease-in-out"
           >
-            {visibleProjects.map((project, index) => (
+            {visibleProjects.map((project) => (
               <motion.a
                 key={project.title}
                 variants={itemVariants}

@@ -64,14 +64,45 @@ const containerVariants = {
   visible: { 
     opacity: 1,
     transition: { 
-      duration: 0.6,
+      duration: 0.8,
       when: "beforeChildren",
-      staggerChildren: 0.1
+      staggerChildren: 0.15,
+      ease: "easeOut"
+    }
+  }
+};
+
+const nameVariants = {
+  hidden: { 
+    opacity: 0,
+    y: 20
+  },
+  visible: { 
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: "easeOut"
     }
   }
 };
 
 const itemVariants = {
+  hidden: { 
+    opacity: 0,
+    y: 10
+  },
+  visible: { 
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
+const projectVariants = {
   hidden: { 
     opacity: 0,
     y: 10
@@ -203,12 +234,12 @@ export const ElementLight = (): JSX.Element => {
       animate="visible"
       className="flex flex-col items-center px-4 py-16 bg-ivory min-h-screen"
     >
-      <motion.div 
-        variants={containerVariants}
-        className="w-full max-w-[568px]"
-      >
-        <motion.header variants={itemVariants} className="mb-12">
-          <motion.div variants={itemVariants} className="flex justify-between items-center mb-10">
+      <div className="w-full max-w-[568px]">
+        <motion.header className="mb-12">
+          <motion.div 
+            variants={itemVariants} 
+            className="flex justify-between items-center mb-10"
+          >
             <div className="flex items-center gap-2">
               <VoiceAgent />
             </div>
@@ -228,7 +259,10 @@ export const ElementLight = (): JSX.Element => {
             </nav>
           </motion.div>
 
-          <motion.h1 variants={itemVariants} className="font-semantic-heading-1 text-persian-green text-[40px] tracking-[-1px] leading-[60px] mb-4">
+          <motion.h1 
+            variants={nameVariants}
+            className="font-semantic-heading-1 text-persian-green text-[40px] tracking-[-1px] leading-[60px] mb-4"
+          >
             <span className="inline-block transform hover:scale-[1.02] transition-all duration-300 relative group" style={{
               textShadow: `
                 1px 1px 0 rgba(6, 182, 212, 0.4),
@@ -254,7 +288,10 @@ export const ElementLight = (): JSX.Element => {
             </span>
           </motion.h1>
 
-          <motion.div variants={itemVariants} className="flex items-center mb-4">
+          <motion.div 
+            variants={itemVariants} 
+            className="flex items-center mb-4"
+          >
             <span className="font-bold text-emperor text-[14.9px] tracking-[-0.40px] leading-6">
               designer
             </span>
@@ -268,8 +305,10 @@ export const ElementLight = (): JSX.Element => {
             </span>
           </motion.div>
 
-          {/* Bio */}
-          <motion.p variants={itemVariants} className="text-[12.8px] leading-5 mb-4">
+          <motion.p 
+            variants={itemVariants} 
+            className="text-[12.8px] leading-5 mb-4"
+          >
             <span className="text-[#666666]">
               Hi, I'm Abhishek, 22. I'm fascinated by{" "}
             </span>
@@ -285,7 +324,6 @@ export const ElementLight = (): JSX.Element => {
             </span>
           </motion.p>
 
-          {/* Weather display */}
           {weather.temperature !== null && (
             <motion.div 
               variants={itemVariants}
@@ -304,7 +342,6 @@ export const ElementLight = (): JSX.Element => {
             </motion.div>
           )}
 
-          {/* Social Links */}
           <motion.div 
             variants={itemVariants}
             className="flex flex-wrap gap-2 mb-6"
@@ -329,23 +366,26 @@ export const ElementLight = (): JSX.Element => {
           </motion.div>
         </motion.header>
 
-        {/* Projects Section */}
         <motion.section 
-          variants={itemVariants}
+          variants={projectVariants}
           className="mb-12"
         >
-          <motion.h2 variants={itemVariants} className="font-semantic-heading-2 text-emperor text-[14.75px] tracking-[-0.40px] leading-6 mb-4">
+          <motion.h2 
+            variants={projectVariants} 
+            className="font-semantic-heading-2 text-emperor text-[14.75px] tracking-[-0.40px] leading-6 mb-4"
+          >
             Projects
           </motion.h2>
 
-          <motion.div 
-            variants={containerVariants}
-            className="space-y-2 transition-all duration-300 ease-in-out"
-          >
-            {visibleProjects.map((project) => (
+          <div className="space-y-2 transition-all duration-300 ease-in-out">
+            {visibleProjects.map((project, index) => (
               <motion.a
                 key={project.title}
-                variants={itemVariants}
+                variants={projectVariants}
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                transition={{ delay: 0.3 + index * 0.1 }}
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -368,7 +408,7 @@ export const ElementLight = (): JSX.Element => {
                 <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-persian-green/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left" />
               </motion.a>
             ))}
-          </motion.div>
+          </div>
           
           {!showAllProjects && projects.length > 4 && (
             <button
@@ -399,7 +439,7 @@ export const ElementLight = (): JSX.Element => {
           )}
 
           <motion.div 
-            variants={itemVariants}
+            variants={projectVariants}
             className="mt-6 p-2.5 sm:p-3 bg-white/40 rounded-lg border border-solid border-gray-100/40 flex items-center group hover:bg-white/50 hover:border-persian-green/20 transition-all duration-300"
           >
             <InfoIcon className="w-3.5 h-3.5 mr-3 text-persian-green/70 group-hover:text-persian-green transition-colors duration-300" />
@@ -434,7 +474,7 @@ export const ElementLight = (): JSX.Element => {
             </div>
           </div>
         </motion.footer>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

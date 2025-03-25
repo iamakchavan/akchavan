@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { VoiceAgent } from "../../components/VoiceAgent";
 import { Separator } from "../../components/ui/separator";
 import styles from './ElementLight.module.css';
+import { motion } from "framer-motion";
 
 // Project data for mapping
 const projects = [
@@ -76,6 +77,33 @@ const getWeatherDescription = (precipitation: number | null, rain: number | null
     return "clear skies, perfect for stargazing... wait 🌟";
   }
   return "clear skies, stars doing their thing ✨";
+};
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { 
+      duration: 0.6,
+      when: "beforeChildren",
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { 
+    opacity: 0,
+    y: 10
+  },
+  visible: { 
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
 };
 
 export const ElementLight = (): JSX.Element => {
@@ -189,11 +217,18 @@ export const ElementLight = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col items-center px-4 py-16 bg-ivory min-h-screen">
-      <div className="w-full max-w-[568px]">
-        {/* Header */}
-        <header className="w-full mb-14">
-          <div className="flex justify-between items-center mb-10">
+    <motion.div 
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="flex flex-col items-center px-4 py-16 bg-ivory min-h-screen"
+    >
+      <motion.div 
+        variants={containerVariants}
+        className="w-full max-w-[568px]"
+      >
+        <motion.header variants={itemVariants} className="mb-12">
+          <motion.div variants={itemVariants} className="flex justify-between items-center mb-10">
             <div className="flex items-center gap-2">
               <VoiceAgent />
             </div>
@@ -211,9 +246,9 @@ export const ElementLight = (): JSX.Element => {
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-persian-green transition-all duration-500 group-hover:w-full"></span>
               </span>
             </nav>
-          </div>
+          </motion.div>
 
-          <h1 className="font-semantic-heading-1 text-persian-green text-[40px] tracking-[-1px] leading-[60px] mb-4">
+          <motion.h1 variants={itemVariants} className="font-semantic-heading-1 text-persian-green text-[40px] tracking-[-1px] leading-[60px] mb-4">
             <span className="inline-block transform hover:scale-[1.02] transition-all duration-300 relative group" style={{
               textShadow: `
                 1px 1px 0 rgba(6, 182, 212, 0.4),
@@ -237,9 +272,9 @@ export const ElementLight = (): JSX.Element => {
                 Abhishek Chavan
               </span>
             </span>
-          </h1>
+          </motion.h1>
 
-          <div className="flex items-center mb-4">
+          <motion.div variants={itemVariants} className="flex items-center mb-4">
             <span className="font-bold text-emperor text-[14.9px] tracking-[-0.40px] leading-6">
               designer
             </span>
@@ -251,10 +286,10 @@ export const ElementLight = (): JSX.Element => {
             <span className="font-bold text-emperor text-[14.75px] tracking-[-0.40px] leading-6">
               researcher
             </span>
-          </div>
+          </motion.div>
 
           {/* Bio */}
-          <p className="text-[12.8px] leading-5 mb-4">
+          <motion.p variants={itemVariants} className="text-[12.8px] leading-5 mb-4">
             <span className="text-[#666666]">
               Hi, I'm Abhishek, 22. I'm fascinated by{" "}
             </span>
@@ -268,11 +303,14 @@ export const ElementLight = (): JSX.Element => {
             <span className="text-[#666666]">
               . Always looking for new problems to solve and new technologies to explore.
             </span>
-          </p>
+          </motion.p>
 
-          {/* Weather display - positioned after bio, before social links */}
+          {/* Weather display */}
           {weather.temperature !== null && (
-            <div className="flex flex-col gap-1.5 mb-8">
+            <motion.div 
+              variants={itemVariants}
+              className="flex flex-col gap-1.5 mb-8"
+            >
               <div className="flex items-center gap-2">
                 <div className="relative">
                   {weather.isDay ? (
@@ -291,40 +329,47 @@ export const ElementLight = (): JSX.Element => {
                   {getWeatherDescription(weather.precipitation, weather.rain, weather.isDay)}
                 </span>
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Social Links */}
-          <div className="flex flex-wrap gap-2 mb-6 mt-8">
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-wrap gap-2 mb-6"
+          >
             {socialLinks.map((link, index) => (
-              <a
+              <motion.a
+                key={link.text}
+                variants={itemVariants}
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                key={index}
-                className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-persian-green"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 text-[11.5px] text-dove-gray hover:text-persian-green transition-colors duration-300"
               >
-                <span className={`text-dove-gray/70 group-hover:text-persian-green/90 transition-colors duration-200 ${link.text === 'x' ? 'font-bold' : ''}`}>
-                  {link.icon}
-                </span>
-                <span className="font-medium text-dove-gray/80 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-persian-green/90 transition-colors duration-200">
-                  {link.text}
-                </span>
-              </a>
+                {link.icon}
+                {link.text}
+              </motion.a>
             ))}
-          </div>
-        </header>
+          </motion.div>
+        </motion.header>
 
         {/* Projects Section */}
-        <section className="mb-12">
-          <h2 className="font-semantic-heading-2 text-emperor text-[14.75px] tracking-[-0.40px] leading-6 mb-4">
+        <motion.section 
+          variants={itemVariants}
+          className="mb-12"
+        >
+          <motion.h2 variants={itemVariants} className="font-semantic-heading-2 text-emperor text-[14.75px] tracking-[-0.40px] leading-6 mb-4">
             Projects
-          </h2>
+          </motion.h2>
 
-          <div className="space-y-2 transition-all duration-300 ease-in-out">
+          <motion.div 
+            variants={containerVariants}
+            className="space-y-2 transition-all duration-300 ease-in-out"
+          >
             {visibleProjects.map((project, index) => (
-              <a
-                key={index}
+              <motion.a
+                key={project.title}
+                variants={itemVariants}
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -345,9 +390,9 @@ export const ElementLight = (): JSX.Element => {
                 </div>
                 <div className="absolute inset-0 bg-persian-green/5 scale-y-0 group-hover:scale-y-100 transition-transform duration-300 ease-out origin-top rounded-sm" />
                 <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-persian-green/10 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out origin-left" />
-              </a>
+              </motion.a>
             ))}
-          </div>
+          </motion.div>
           
           {!showAllProjects && projects.length > 4 && (
             <button
@@ -377,7 +422,10 @@ export const ElementLight = (): JSX.Element => {
             </div>
           )}
 
-          <div className="mt-6 p-2.5 sm:p-3 bg-white/40 rounded-lg border border-solid border-gray-100/40 flex items-center group hover:bg-white/50 hover:border-persian-green/20 transition-all duration-300">
+          <motion.div 
+            variants={itemVariants}
+            className="mt-6 p-2.5 sm:p-3 bg-white/40 rounded-lg border border-solid border-gray-100/40 flex items-center group hover:bg-white/50 hover:border-persian-green/20 transition-all duration-300"
+          >
             <InfoIcon className="w-3.5 h-3.5 mr-3 text-persian-green/70 group-hover:text-persian-green transition-colors duration-300" />
             <p className="text-[#666666] text-[11.5px] sm:text-[13px] leading-5 sm:leading-6">
               Feel free to explore my{" "}
@@ -390,11 +438,13 @@ export const ElementLight = (): JSX.Element => {
               </a>{" "}
               for more projects and design work.
             </p>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
-        {/* Footer */}
-        <footer className="mt-4">
+        <motion.footer 
+          variants={itemVariants}
+          className="mt-4"
+        >
           <Separator className="h-px bg-emperor mb-4" />
           <div className="flex justify-between items-center">
             <span className="font-normal text-dove-gray text-[11px] sm:text-[13px] leading-4 sm:leading-5">
@@ -407,8 +457,8 @@ export const ElementLight = (): JSX.Element => {
               </span>
             </div>
           </div>
-        </footer>
-      </div>
-    </div>
+        </motion.footer>
+      </motion.div>
+    </motion.div>
   );
 };

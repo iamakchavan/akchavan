@@ -1,4 +1,4 @@
-# Personal Portfolio Website
+# Personal Portfolio Website Template
 
 A modern, responsive personal portfolio website built with React, TypeScript, and Tailwind CSS. This project showcases professional experience, skills, and projects in an elegant and user-friendly interface.
 

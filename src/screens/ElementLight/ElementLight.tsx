@@ -34,14 +34,14 @@ const projects = [
     link: "https://www.figma.com/community/file/1484678564434143542",
   },
   {
-    title: "2025-in-pixels",
-    description: "A visual representation of 2025 in pixels with daily progress tracking.",
-    link: "https://cyberyear.vercel.app",
+    title: "typein",
+    description: "A minimalist writing app that lets you focus on what matters - your thoughts!",
+    link: "https://typein.space",
   },
   {
-    title: "dAILy",
-    description: "dAILy - An AI-powered news platform that presents tech news in both developer and layman terms",
-    link: "https://dailyonai.netlify.app"
+    title: "2025-in-pixels",
+    description: "A visual representation of 2025 in pixels with daily progress tracking",
+    link: "https://cyberyear.vercel.app"
   },
   {
     title: "Netflix UI Redesign.",

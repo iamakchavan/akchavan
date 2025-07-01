@@ -216,7 +216,7 @@ export function VoiceAgent() {
             exit={{ opacity: 0, y: 10 }}
             className="text-[12.8px] text-persian-green text-center"
           >
-            Connecting to AK...
+            Connecting to Seraphina...
           </motion.p>
         ) : conversation.status === 'connected' ? (
           <motion.span
@@ -257,7 +257,7 @@ export function VoiceAgent() {
                 backgroundSize: '400% 100%',
                 animation: 'shimmer 3s ease-in-out infinite'
             }}>
-              talk to me!
+              Seraphina here!
             </span>
           </motion.span>
         )}
